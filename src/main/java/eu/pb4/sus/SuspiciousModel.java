@@ -55,6 +55,11 @@ public class SuspiciousModel extends ElementHolder {
         torso.setInterpolationDuration(2);
         leftHand.setInterpolationDuration(2);
         rightHand.setInterpolationDuration(2);
+        leftLeg.setTeleportDuration(2);
+        rightLeg.setTeleportDuration(2);
+        torso.setTeleportDuration(2);
+        leftHand.setTeleportDuration(2);
+        rightHand.setTeleportDuration(2);
         leftHand.setModelTransformation(ModelTransformationMode.THIRD_PERSON_RIGHT_HAND);
         rightHand.setModelTransformation(ModelTransformationMode.THIRD_PERSON_RIGHT_HAND);
         if (sourceEntity.canHit() || sourceEntity instanceof EnderDragonEntity) {
@@ -92,20 +97,20 @@ public class SuspiciousModel extends ElementHolder {
     public void setSize(EntityDimensions dimensions) {
         try {
             if (this.interaction != null) {
-                this.interaction.setSize(dimensions.width, dimensions.height);
+                this.interaction.setSize(dimensions.width(), dimensions.height());
             }
-            this.rideAnchor.setOffset(new Vec3d(0, this.entity.getMountedHeightOffset(), 0));
-            scale.set(Math.sqrt(dimensions.width * dimensions.height / 2));
-            this.torso.setDisplayHeight(dimensions.height);
-            this.torso.setDisplayWidth(dimensions.width);
-            this.leftLeg.setDisplayHeight(dimensions.height);
-            this.leftLeg.setDisplayWidth(dimensions.width);
-            this.rightLeg.setDisplayHeight(dimensions.height);
-            this.rightLeg.setDisplayWidth(dimensions.width);
-            this.leftHand.setDisplayHeight(dimensions.height + 0.2f);
-            this.leftHand.setDisplayWidth(dimensions.width + 0.2f);
-            this.rightHand.setDisplayHeight(dimensions.height + 0.2f);
-            this.rightHand.setDisplayWidth(dimensions.width + 0.2f);
+            this.rideAnchor.setOffset(this.entity.getAttachments().getPointOrDefault(EntityAttachmentType.PASSENGER, 0, 0));
+            scale.set(Math.sqrt(dimensions.width() * dimensions.height() / 2));
+            this.torso.setDisplayHeight(dimensions.height());
+            this.torso.setDisplayWidth(dimensions.width());
+            this.leftLeg.setDisplayHeight(dimensions.height());
+            this.leftLeg.setDisplayWidth(dimensions.width());
+            this.rightLeg.setDisplayHeight(dimensions.height());
+            this.rightLeg.setDisplayWidth(dimensions.width());
+            this.leftHand.setDisplayHeight(dimensions.height() + 0.2f);
+            this.leftHand.setDisplayWidth(dimensions.width() + 0.2f);
+            this.rightHand.setDisplayHeight(dimensions.height() + 0.2f);
+            this.rightHand.setDisplayWidth(dimensions.width() + 0.2f);
             this.deathAngle = -1;
         } catch (Throwable e) {
 
@@ -212,6 +217,7 @@ public class SuspiciousModel extends ElementHolder {
         this.previousYaw = this.entity.getYaw();
 
         stack.clear();
+        stack.rotateY(MathHelper.PI);
 
         if (this.entity instanceof ItemEntity ) {
             stack.translate(0, MathHelper.sin(MathHelper.wrapDegrees(this.entity.age * 5) * MathHelper.RADIANS_PER_DEGREE) * 0.05f + 0.1f, 0);
@@ -235,7 +241,7 @@ public class SuspiciousModel extends ElementHolder {
         stack.translate(0, height - 0.1f, 0);
         stack.scale(2f);
         try {
-            stack.scale(this.entity.getDimensions(EntityPose.STANDING).height / this.torso.getDisplayHeight());
+            stack.scale(this.entity.getDimensions(EntityPose.STANDING).height() / this.torso.getDisplayHeight());
         } catch (Throwable e) {
 
         }
