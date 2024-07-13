@@ -17,8 +17,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntityEquipmentUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
+import net.minecraft.server.network.PlayerAssociatedNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.EntityTrackingListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -88,7 +88,7 @@ public abstract class EntityMixin implements PolymerEntity, PolymerKeepModel {
     }
 
     @Override
-    public void onEntityTrackerTick(Set<EntityTrackingListener> listeners) {
+    public void onEntityTrackerTick(Set<PlayerAssociatedNetworkHandler> listeners) {
         if (model != null) {
             this.model.tick();
         }
